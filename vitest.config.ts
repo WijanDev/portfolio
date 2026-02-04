@@ -2,6 +2,7 @@
 import { defineConfig } from 'vitest/config'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
     plugins: [
@@ -18,6 +19,13 @@ export default defineConfig({
             provider: 'v8',
             include: ['src/**/*'],
             exclude: ['node_modules', 'dist', '**/*.d.ts', '**/*.test.tsx', '**/*.config.*', '**/*.css', '**/*.svg', '**/routeTree.gen.ts'],
+        },
+    },
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+            '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+            '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
         },
     },
 })
