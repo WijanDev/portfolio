@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import JsonCode from '../components/JsonCode'
+import JsonCode from '@components/JsonCode'
 import { Play, Pause, StepForward, RotateCcw } from 'lucide-react'
 
 export const Route = createFileRoute('/debug')({

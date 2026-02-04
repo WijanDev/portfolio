@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, GitBranch } from 'lucide-react'
 
 export const Route = createFileRoute('/projects')({ component: Projects })
 
@@ -54,7 +54,7 @@ function Projects() {
 
                         <div className="project-links">
                             <a href={project.github} className="project-link">
-                                <Github size={14} style={{ marginRight: '4px' }} /> Code
+                                <GitBranch size={14} style={{ marginRight: '4px' }} /> Code
                             </a>
                             <a href={project.link} className="project-link">
                                 <ExternalLink size={14} style={{ marginRight: '4px' }} /> Live Demo

@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
-import ActivityBar from './ActivityBar';
-import Sidebar from './Sidebar';
-import StatusBar from './StatusBar';
-import Tabs from './Tabs';
+import ActivityBar from '@/components/ActivityBar';
+import Sidebar from '@/components/Sidebar';
+import StatusBar from '@/components/StatusBar';
+import Tabs from '@/components/Tabs';
 
 interface LayoutProps {
     children: ReactNode;
