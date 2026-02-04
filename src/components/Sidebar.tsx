@@ -16,24 +16,26 @@ export default function Sidebar() {
             </div>
 
             <div>
-                <div
+                <button
+                    type="button"
                     className="sidebar-section"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                     <span>PORTFOLIO</span>
-                </div>
+                </button>
 
                 {isOpen && (
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div
+                        <button
+                            type="button"
                             className="folder-item"
                             onClick={() => setIsSrcOpen(!isSrcOpen)}
                         >
                             {isSrcOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                             <Folder size={16} style={{ color: '#dcb67a', margin: '0 4px' }} />
                             <span>src</span>
-                        </div>
+                        </button>
 
                         {isSrcOpen && (
                             <>

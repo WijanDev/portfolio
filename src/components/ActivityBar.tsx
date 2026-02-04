@@ -7,17 +7,18 @@ interface ActivityBarProps {
     setIsExplorerOpen: (isOpen: boolean) => void;
 }
 
-export default function ActivityBar({ isExplorerOpen, onToggleExplorer, setIsExplorerOpen }: ActivityBarProps) {
+export default function ActivityBar({ isExplorerOpen, onToggleExplorer, setIsExplorerOpen }: Readonly<ActivityBarProps>) {
     const location = useLocation();
     return (
         <div className="activity-bar">
             <div className="activity-icons-top">
-                <div
+                <button
+                    type="button"
                     className={`icon-container ${isExplorerOpen ? 'active' : ''}`}
                     onClick={onToggleExplorer}
                 >
                     <Files className="vscode-icon" />
-                </div>
+                </button>
                 <div className="icon-container">
                     <Search className="vscode-icon" />
                 </div>
@@ -26,26 +27,33 @@ export default function ActivityBar({ isExplorerOpen, onToggleExplorer, setIsExp
                         <GitBranch className="vscode-icon" />
                     </a>
                 </div>
-                <div
+                <button
+                    type="button"
                     className={`icon-container ${location.pathname === '/debug' && !isExplorerOpen ? 'active' : ''}`}
                     onClick={() => setIsExplorerOpen(false)}
                 >
                     <Link to="/debug">
                         <BugPlay className="vscode-icon" />
                     </Link>
-                </div>
+                </button>
                 <div className="icon-container">
                     <MonitorDot className="vscode-icon" />
                 </div>
             </div>
 
             <div className="activity-icons-bottom">
-                <div className="icon-container">
+                <button
+                    type="button"
+                    className="icon-container"
+                >
                     <UserCircle className="vscode-icon" />
-                </div>
-                <div className="icon-container">
+                </button>
+                <button
+                    type="button"
+                    className="icon-container"
+                >
                     <Settings className="vscode-icon" />
-                </div>
+                </button>
             </div>
         </div>
     );

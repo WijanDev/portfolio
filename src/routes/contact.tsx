@@ -11,7 +11,7 @@ function Contact() {
         message: ''
     })
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault()
         alert('Message sent (demo)!')
     }
@@ -50,9 +50,10 @@ function Contact() {
                     <h2>Send Message</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label className="form-label">Name</label>
+                            <label htmlFor="name" className="form-label">Name</label>
                             <input
                                 type="text"
+                                id="name"
                                 className="form-input"
                                 placeholder="Your Name"
                                 value={formData.name}
@@ -60,9 +61,10 @@ function Contact() {
                             />
                         </div>
                         <div className="form-group">
-                            <label className="form-label">Email</label>
+                            <label htmlFor="email" className="form-label">Email</label>
                             <input
                                 type="email"
+                                id="email"
                                 className="form-input"
                                 placeholder="email@example.com"
                                 value={formData.email}
@@ -70,8 +72,9 @@ function Contact() {
                             />
                         </div>
                         <div className="form-group">
-                            <label className="form-label">Message</label>
+                            <label htmlFor="message" className="form-label">Message</label>
                             <textarea
+                                id="message"
                                 className="form-textarea"
                                 rows={5}
                                 placeholder="Type your message..."
