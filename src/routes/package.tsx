@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import JsonCode from '../components/JsonCode'
+import JsonCode from '@components/JsonCode'
 
 export const Route = createFileRoute('/package')({
     component: PackageJson,

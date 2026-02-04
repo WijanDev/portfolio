@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import CssCode from '../components/CssCode'
+import CssCode from '@components/CssCode'
 
 export const Route = createFileRoute('/contact')({ component: Contact })
 

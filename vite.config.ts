@@ -10,6 +10,8 @@ const config = defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
     },
   },
   plugins: [
