@@ -27,15 +27,13 @@ export default function ActivityBar({ isExplorerOpen, onToggleExplorer, setIsExp
                         <GitBranch className="vscode-icon" />
                     </a>
                 </div>
-                <button
-                    type="button"
+                <Link
+                    to="/debug"
                     className={`icon-container ${location.pathname === '/debug' && !isExplorerOpen ? 'active' : ''}`}
                     onClick={() => setIsExplorerOpen(false)}
                 >
-                    <Link to="/debug">
-                        <BugPlay className="vscode-icon" />
-                    </Link>
-                </button>
+                    <BugPlay className="vscode-icon" />
+                </Link>
                 <div className="icon-container">
                     <MonitorDot className="vscode-icon" />
                 </div>

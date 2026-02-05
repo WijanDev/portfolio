@@ -99,6 +99,8 @@ body {
   justify-content: center;
   align-items: center;
   padding: 5px;
+  background: transparent;
+  border: none;
 }
 
 .icon-container:hover {
@@ -145,6 +147,12 @@ body {
   cursor: pointer;
   font-weight: bold;
   color: var(--vscode-text);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .sidebar-section:hover {
@@ -162,6 +170,12 @@ body {
   padding: 3px 16px;
   cursor: pointer;
   color: var(--vscode-text);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .folder-item:hover {
