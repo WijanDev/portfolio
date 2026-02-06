@@ -17,7 +17,7 @@ describe('Sidebar Component', () => {
 
         expect(screen.getByText('PORTFOLIO')).toBeTruthy();
         expect(screen.getByText('src')).toBeTruthy();
-        expect(screen.getByText('home.tsx')).toBeTruthy();
+        expect(screen.getByText('readme.md')).toBeTruthy();
     });
 
     it('toggles PORTFOLIO folder', () => {
@@ -43,11 +43,11 @@ describe('Sidebar Component', () => {
 
         // Collapse src
         fireEvent.click(srcFolder);
-        expect(screen.queryByText('home.tsx')).toBeNull();
+        expect(screen.queryByText('readme.md')).toBeNull();
 
         // Expand src
         fireEvent.click(srcFolder);
-        expect(screen.getByText('home.tsx')).toBeTruthy();
+        expect(screen.getByText('readme.md')).toBeTruthy();
     });
 
     it('highlights active file', () => {
@@ -66,7 +66,7 @@ describe('Sidebar Component', () => {
         expect(linkDiv?.className).toContain('active');
 
         // Home should not be active
-        const homeText = screen.getByText('home.tsx');
-        expect(homeText.parentElement?.className).not.toContain('active');
+        const readmeText = screen.getByText('readme.md');
+        expect(readmeText.parentElement?.className).not.toContain('active');
     });
 });

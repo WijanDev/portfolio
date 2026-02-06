@@ -9,18 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ReadmeRouteImport } from './routes/readme'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PackageRouteImport } from './routes/package'
 import { Route as DebugRouteImport } from './routes/debug'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
 
-const ReadmeRoute = ReadmeRouteImport.update({
-  id: '/readme',
-  path: '/readme',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -53,7 +47,6 @@ export interface FileRoutesByFullPath {
   '/debug': typeof DebugRoute
   '/package': typeof PackageRoute
   '/projects': typeof ProjectsRoute
-  '/readme': typeof ReadmeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +54,6 @@ export interface FileRoutesByTo {
   '/debug': typeof DebugRoute
   '/package': typeof PackageRoute
   '/projects': typeof ProjectsRoute
-  '/readme': typeof ReadmeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,21 +62,13 @@ export interface FileRoutesById {
   '/debug': typeof DebugRoute
   '/package': typeof PackageRoute
   '/projects': typeof ProjectsRoute
-  '/readme': typeof ReadmeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/debug' | '/package' | '/projects' | '/readme'
+  fullPaths: '/' | '/contact' | '/debug' | '/package' | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/debug' | '/package' | '/projects' | '/readme'
-  id:
-    | '__root__'
-    | '/'
-    | '/contact'
-    | '/debug'
-    | '/package'
-    | '/projects'
-    | '/readme'
+  to: '/' | '/contact' | '/debug' | '/package' | '/projects'
+  id: '__root__' | '/' | '/contact' | '/debug' | '/package' | '/projects'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,18 +77,10 @@ export interface RootRouteChildren {
   DebugRoute: typeof DebugRoute
   PackageRoute: typeof PackageRoute
   ProjectsRoute: typeof ProjectsRoute
-  ReadmeRoute: typeof ReadmeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/readme': {
-      id: '/readme'
-      path: '/readme'
-      fullPath: '/readme'
-      preLoaderRoute: typeof ReadmeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/projects': {
       id: '/projects'
       path: '/projects'
@@ -149,7 +125,6 @@ const rootRouteChildren: RootRouteChildren = {
   DebugRoute: DebugRoute,
   PackageRoute: PackageRoute,
   ProjectsRoute: ProjectsRoute,
-  ReadmeRoute: ReadmeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
