@@ -7,5 +7,9 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "wijandev",
+    "projectKey": "WijanDev_portfolio"
   }
 }
