@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, FileCode, FileJson, FileType, Folder, Info } from 'lucide-react';
+import { ChevronDown, ChevronRight, FileCode, FileJson, FileType, Folder } from 'lucide-react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -41,7 +41,7 @@ export default function Sidebar() {
                             <>
                                 <Link to="/" className={`file-item ${isActive('/') ? 'active' : ''}`}>
                                     <FileCode size={16} className="icon-html" />
-                                    <span>home.tsx</span>
+                                    <span>readme.md</span>
                                 </Link>
 
                                 <Link to="/projects" className={`file-item ${isActive('/projects') ? 'active' : ''}`}>
@@ -60,11 +60,6 @@ export default function Sidebar() {
                             <FileJson size={16} className="icon-json" />
                             <span>package.json</span>
                         </Link>
-                        <Link to="/readme" className={`file-item ${isActive('/readme') ? 'active' : ''}`}>
-                            <Info size={16} style={{ color: '#519aba' }} />
-                            <span>readme.md</span>
-                        </Link>
-
                     </div>
                 )}
             </div>
