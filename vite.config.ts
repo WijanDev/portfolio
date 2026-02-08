@@ -6,25 +6,29 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 import { fileURLToPath, URL } from 'node:url'
 import { nitro } from 'nitro/vite'
 
-const config = defineConfig({
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
+export default defineConfig(({ mode }) => {
+  return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
+      },
     },
-  },
-  plugins: [
-    devtools(),
-    nitro(),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
-
-    tanstackStart(),
-    viteReact(),
-  ],
+    build: {
+      minify: 'esbuild',
+      cssMinify: true,
+      sourcemap: false,
+    },
+    plugins: [
+      // Solo incluimos devtools si el modo NO es production
+      mode !== 'production' && devtools(),
+      nitro(),
+      viteTsConfigPaths({
+        projects: ['./tsconfig.json'],
+      }),
+      tanstackStart(),
+      viteReact(),
+    ].filter(Boolean),
+  }
 })
-
-export default config
