@@ -16,9 +16,19 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      minify: 'esbuild',
-      cssMinify: true,
-      sourcemap: false,
+      minify: 'esbuild', // Es el más rápido y eficiente para Cloudflare
+      sourcemap: false,  // Desactiva esto para reducir el peso de los assets en producción
+      reportCompressedSize: false, // Acelera la build
+      rollupOptions: {
+        output: {
+          // Esto ayuda a que el JS se divida en trozos más pequeños (Lazy loading)
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          },
+        },
+      },
     },
     plugins: [
       // Solo incluimos devtools si el modo NO es production
