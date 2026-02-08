@@ -6,25 +6,39 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 import { fileURLToPath, URL } from 'node:url'
 import { nitro } from 'nitro/vite'
 
-const config = defineConfig({
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
+export default defineConfig(({ mode }) => {
+  return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
+      },
     },
-  },
-  plugins: [
-    devtools(),
-    nitro(),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
-
-    tanstackStart(),
-    viteReact(),
-  ],
+    build: {
+      minify: 'esbuild', // Es el más rápido y eficiente para Cloudflare
+      sourcemap: false,  // Desactiva esto para reducir el peso de los assets en producción
+      reportCompressedSize: false, // Acelera la build
+      rollupOptions: {
+        output: {
+          // Esto ayuda a que el JS se divida en trozos más pequeños (Lazy loading)
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          },
+        },
+      },
+    },
+    plugins: [
+      // Solo incluimos devtools si el modo NO es production
+      mode !== 'production' && devtools(),
+      nitro(),
+      viteTsConfigPaths({
+        projects: ['./tsconfig.json'],
+      }),
+      tanstackStart(),
+      viteReact(),
+    ].filter(Boolean),
+  }
 })
-
-export default config

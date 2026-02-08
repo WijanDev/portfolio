@@ -18,7 +18,7 @@ export default defineConfig({
             reporter: ['text', 'json', 'html', 'lcov'],
             provider: 'v8',
             include: ['src/**/*'],
-            exclude: ['node_modules', 'dist', '**/*.d.ts', '**/*.test.tsx', '**/*.config.*', '**/*.css', '**/*.svg', '**/routeTree.gen.ts'],
+            exclude: ['node_modules', 'dist', '**/*.d.ts', '**/*.test.tsx', '**/*.config.*', '**/*.css', '**/*.svg', '**/routeTree.gen.ts', 'vite.config.ts', 'vitest.config.ts'],
         },
     },
     resolve: {
