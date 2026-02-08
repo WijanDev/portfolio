@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import CssCode from '@components/CssCode'
+import { sendEmail } from '../server/send-email'
 
 export const Route = createFileRoute('/contact')({ component: Contact })
 
@@ -10,10 +11,29 @@ function Contact() {
         email: '',
         message: ''
     })
+    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+    const [errorMessage, setErrorMessage] = useState('')
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
-        alert('Message sent (demo)!')
+        setStatus('submitting')
+        setErrorMessage('')
+
+        try {
+            const result = await sendEmail({ data: formData })
+
+            if (result.success) {
+                setStatus('success')
+                setFormData({ name: '', email: '', message: '' })
+            } else {
+                setStatus('error')
+                setErrorMessage(String(result.error) || 'Failed to send message')
+            }
+        } catch (error) {
+            console.error(error)
+            setStatus('error')
+            setErrorMessage('An unexpected error occurred')
+        }
     }
 
     const socialMedia = {
@@ -48,6 +68,16 @@ function Contact() {
             <div className="contact-form-container">
                 <div className="contact-form">
                     <h2>Send Message</h2>
+                    {status === 'success' && (
+                        <div className="success-message" style={{ color: 'green', marginBottom: '1rem' }}>
+                            Message sent successfully!
+                        </div>
+                    )}
+                    {status === 'error' && (
+                        <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+                            {errorMessage}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="name" className="form-label">Name</label>
@@ -58,6 +88,7 @@ function Contact() {
                                 placeholder="Your Name"
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                disabled={status === 'submitting'}
                             />
                         </div>
                         <div className="form-group">
@@ -69,6 +100,7 @@ function Contact() {
                                 placeholder="email@example.com"
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                disabled={status === 'submitting'}
                             />
                         </div>
                         <div className="form-group">
@@ -80,13 +112,15 @@ function Contact() {
                                 placeholder="Type your message..."
                                 value={formData.message}
                                 onChange={e => setFormData({ ...formData, message: e.target.value })}
+                                disabled={status === 'submitting'}
                             />
                         </div>
                         <button
                             type="submit"
                             className="submit-btn"
+                            disabled={status === 'submitting'}
                         >
-                            Send Message
+                            {status === 'submitting' ? 'Sending...' : 'Send Message'}
                         </button>
                     </form>
                 </div>
