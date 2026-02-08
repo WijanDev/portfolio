@@ -12,6 +12,191 @@
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+[data-theme="light"] {
+  --vscode-bg: #ffffff;
+  --vscode-sidebar-bg: #f3f3f3;
+  --vscode-activity-bar-bg: #2c2c2c;
+  /* Usually stays dark or lighter gray? Let's use darker for contrast or standard light sidebar */
+  --vscode-activity-bar-bg: #eeeeee;
+  /* Updated for light theme activity bar */
+  --vscode-status-bar-bg: #007acc;
+  --vscode-tab-active-bg: #ffffff;
+  --vscode-tab-inactive-bg: #ececec;
+  --vscode-text: #333333;
+  --vscode-accent: #007acc;
+  --vscode-border: #e4e4e4;
+  --vscode-hover: #e8e8e8;
+}
+
+/* Override specific colors for light theme if needed */
+[data-theme="light"] body {
+  background-color: var(--vscode-bg);
+  color: var(--vscode-text);
+}
+
+[data-theme="light"] .project-title {
+  color: #005cc5;
+  /* Darker blue for light theme */
+}
+
+[data-theme="light"] .project-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .tag {
+  background-color: #e1e4e8;
+  color: #24292e;
+}
+
+[data-theme="light"] .project-link {
+  color: #0366d6;
+}
+
+[data-theme="light"] .project-link:hover {
+  color: #000000;
+}
+
+[data-theme="light"] .submit-btn {
+  background-color: #007acc;
+}
+
+[data-theme="light"] .submit-btn:hover {
+  background-color: #0062a3;
+}
+
+[data-theme="light"] .form-input,
+[data-theme="light"] .form-textarea {
+  background-color: #ffffff;
+  color: #333333;
+  border-color: #cccccc;
+}
+
+[data-theme="light"] .token-keyword {
+  color: #d73a49;
+}
+
+[data-theme="light"] .token-bracket {
+  color: #24292e;
+}
+
+[data-theme="light"] .token-paren {
+  color: #24292e;
+}
+
+[data-theme="light"] .token-variable {
+  color: #005cc5;
+}
+
+[data-theme="light"] .token-property {
+  color: #005cc5;
+}
+
+[data-theme="light"] .token-string {
+  color: #032f62;
+}
+
+[data-theme="light"] .token-number {
+  color: #005cc5;
+}
+
+[data-theme="light"] .token-comment {
+  color: #6a737d;
+}
+
+[data-theme="light"] .token-type {
+  color: #6f42c1;
+}
+
+[data-theme="light"] .token-class {
+  color: #6f42c1;
+}
+
+[data-theme="light"] .token-function {
+  color: #6f42c1;
+}
+
+[data-theme="light"] .token-operator {
+  color: #24292e;
+}
+
+[data-theme="light"] .token-punctuation {
+  color: #24292e;
+}
+
+
+[data-theme="light"] .home-content h1 {
+  color: #24292e;
+}
+
+/* Light Theme Visibility Fixes */
+[data-theme="light"] .tab.active {
+  color: #333333;
+  /* Dark text for active tab in light mode */
+  background-color: #ffffff;
+}
+
+[data-theme="light"] .file-item.active {
+  background-color: #e4e6f1;
+  /* Light selection background */
+  color: #000000;
+}
+
+[data-theme="light"] .file-item:hover,
+[data-theme="light"] .folder-item:hover,
+[data-theme="light"] .sidebar-section:hover,
+[data-theme="light"] .tab:hover {
+  background-color: #e8e8e8;
+}
+
+[data-theme="light"] .icon-container.active .vscode-icon {
+  color: #333333;
+  /* Dark icon for active state in activity bar */
+}
+
+[data-theme="light"] .icon-container.active {
+  border-left-color: #007acc;
+  /* Blue accent instead of white */
+}
+
+[data-theme="light"] .sidebar-title {
+  color: #6f6f6f;
+}
+
+[data-theme="light"] .contact-form h2 {
+  color: #333333;
+}
+
+[data-theme="light"] .form-label {
+  color: #555555;
+}
+
+.theme-toggle-btn {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--vscode-text);
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+  color: var(--vscode-text);
+}
+
+/* Ensure editor container is relative for absolute positioning */
+.editor-container {
+  position: relative;
+}
+
+/* ... existing styles ... */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -600,4 +785,85 @@ body {
 
 .submit-btn:hover {
   background-color: #1177bb;
+}
+
+/* Debug Page */
+.debug-container {
+  padding: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.debug-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  padding: 8px;
+  background-color: var(--vscode-sidebar-bg);
+  width: fit-content;
+  border: 1px solid var(--vscode-border);
+}
+
+.debug-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.debug-btn-pause {
+  color: #ebcd28;
+}
+
+.debug-btn-play {
+  color: #60d660;
+}
+
+.debug-btn-step {
+  color: #a0a0a0;
+}
+
+.debug-btn-restart {
+  color: #569cd6;
+}
+
+.debug-section-title {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.debug-variables-panel {
+  border: 1px solid var(--vscode-border);
+  padding: 16px;
+  background-color: var(--vscode-bg);
+}
+
+.debug-callstack {
+  font-family: 'Consolas', monospace;
+  color: #a0a0a0;
+  font-size: 13px;
+}
+
+.callstack-item {
+  padding: 4px 0;
+}
+
+[data-theme="light"] .debug-section-title {
+  color: #555555;
+  font-weight: bold;
+}
+
+[data-theme="light"] .debug-btn-step {
+  color: #555555;
+}
+
+[data-theme="light"] .debug-callstack {
+  color: #333333;
 }
