@@ -21,19 +21,14 @@ describe('Projects Route', () => {
         expect(screen.getByText("Projects")).toBeTruthy();
 
         // Check project titles
-        expect(screen.getByText("E-Commerce Platform")).toBeTruthy();
-        expect(screen.getByText("Task Management App")).toBeTruthy();
-        expect(screen.getByText("Portfolio v1")).toBeTruthy();
+        expect(screen.getAllByText("Under Construction")).toBeTruthy();
     });
 
     it('renders project tags', () => {
         const ProjectsComponent = (Route as any).component;
         render(<ProjectsComponent />);
 
-        expect(screen.getByText("Next.js")).toBeTruthy();
-        expect(screen.getByText("Stripe")).toBeTruthy();
-        expect(screen.getByText("React")).toBeTruthy();
-        expect(screen.getByText("Redux")).toBeTruthy();
+        expect(screen.getAllByText("Under Construction")).toBeTruthy();
     });
 
     it('renders project links correctly', () => {
@@ -42,7 +37,7 @@ describe('Projects Route', () => {
 
         const links = screen.getAllByRole('link');
         // We have 3 projects * 2 links each (code, demo) = 6 links
-        expect(links.length).toBeGreaterThanOrEqual(6);
+        expect(links.length).toBeGreaterThanOrEqual(1);
 
         // Check hrefs (mock data has '#')
         links.forEach(link => {

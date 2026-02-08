@@ -4,28 +4,15 @@ import { ExternalLink, GitBranch } from 'lucide-react'
 export const Route = createFileRoute('/projects')({ component: Projects })
 
 function Projects() {
+
     const projects = [
         {
-            title: 'E-Commerce Platform',
-            description: 'A full-featured online store built with Next.js, Stripe, and Tailwind.',
-            tags: ['Next.js', 'Stripe', 'Tailwind'],
+            title: 'Under Construction',
+            description: 'This page is currently under construction.',
+            tags: ['Under Construction'],
             link: '#',
             github: '#'
         },
-        {
-            title: 'Task Management App',
-            description: 'Productivity tool with drag-and-drop Kanban board.',
-            tags: ['React', 'Redux', 'Firebase'],
-            link: '#',
-            github: '#'
-        },
-        {
-            title: 'Portfolio v1',
-            description: 'My previous portfolio site styled with minimalistic modern design.',
-            tags: ['HTML', 'Sass', 'JavaScript'],
-            link: '#',
-            github: '#'
-        }
     ]
 
     return (
@@ -65,7 +52,7 @@ function Projects() {
             </div>
 
             <div style={{ marginTop: '24px' }} className="token-comment">
-                {'// More projects coming soon...'}
+                {'// More projects coming soon.'}
             </div>
         </div>
     )
