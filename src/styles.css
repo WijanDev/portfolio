@@ -191,11 +191,6 @@
   color: var(--vscode-text);
 }
 
-/* Ensure editor container is relative for absolute positioning */
-.editor-container {
-  position: relative;
-}
-
 /* ... existing styles ... */
 * {
   box-sizing: border-box;
@@ -475,6 +470,7 @@ body {
   flex: 1;
   background-color: var(--vscode-bg);
   height: 100%;
+  position: relative;
 }
 
 .editor-content {
