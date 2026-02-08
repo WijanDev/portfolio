@@ -69,4 +69,30 @@ describe('Sidebar Component', () => {
         const readmeText = screen.getByText('readme.md');
         expect(readmeText.parentElement?.className).not.toContain('active');
     });
+
+    it('renders contact and package.json links', () => {
+        (useLocation as any).mockReturnValue({ pathname: '/' });
+        render(<Sidebar />);
+
+        expect(screen.getByText('contact.css')).toBeTruthy();
+        expect(screen.getByText('package.json')).toBeTruthy();
+    });
+
+    it('highlights active contact key', () => {
+        (useLocation as any).mockReturnValue({ pathname: '/contact' });
+        render(<Sidebar />);
+
+        const contactText = screen.getByText('contact.css');
+        const linkDiv = contactText.parentElement;
+        expect(linkDiv?.className).toContain('active');
+    });
+
+    it('highlights active package.json', () => {
+        (useLocation as any).mockReturnValue({ pathname: '/package' });
+        render(<Sidebar />);
+
+        const packageText = screen.getByText('package.json');
+        const linkDiv = packageText.parentElement;
+        expect(linkDiv?.className).toContain('active');
+    });
 });
