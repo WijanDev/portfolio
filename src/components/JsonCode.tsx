@@ -1,9 +1,11 @@
+import React from 'react';
+
 interface JsonCodeProps {
-    variableName: string;
-    data: any;
+    readonly variableName: string;
+    readonly data: any;
 }
 
-export default function JsonCode({ variableName, data }: JsonCodeProps) {
+export default function JsonCode({ variableName, data }: Readonly<JsonCodeProps>) {
 
     const renderValue = (value: any, suffix: string = ''): React.ReactNode => {
         const punctuation = suffix ? <span className="token-punctuation">{suffix}</span> : null;
@@ -31,8 +33,9 @@ export default function JsonCode({ variableName, data }: JsonCodeProps) {
                 <>
                     <span className="token-paren">[</span>
                     {value.map((item, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <div key={index} style={{ paddingLeft: '32px' }}>
-                            {renderValue(item, ',')}
+                            {renderValue(item, index === value.length - 1 ? '' : ',')}
                         </div>
                     ))}
                     <div>
@@ -49,11 +52,11 @@ export default function JsonCode({ variableName, data }: JsonCodeProps) {
             return (
                 <>
                     <span className="token-bracket">{'{'}</span>
-                    {entries.map(([key, val]) => (
+                    {entries.map(([key, val], index) => (
                         <div key={key} style={{ paddingLeft: '32px' }}>
                             <span className="token-property">{key}</span>
                             <span className="token-punctuation">:</span>{' '}
-                            {renderValue(val, ',')}
+                            {renderValue(val, index === entries.length - 1 ? '' : ',')}
                         </div>
                     ))}
                     <div>
@@ -75,5 +78,3 @@ export default function JsonCode({ variableName, data }: JsonCodeProps) {
         </div>
     );
 }
-
-

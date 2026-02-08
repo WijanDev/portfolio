@@ -49,6 +49,7 @@ function Debug() {
         levelOfCoffe: levelOfCoffe(),
         bugsFixedToday: bugsFixedToday(),
         yearsOfExperience: yearsOfExperience(),
+        status: getStatus(),
     });
 
 
@@ -63,6 +64,7 @@ function Debug() {
                     levelOfCoffe: levelOfCoffe(),
                     bugsFixedToday: bugsFixedToday(),
                     yearsOfExperience: yearsOfExperience(),
+                    status: getStatus(),
                 });
             }, 1000);
         } else {
@@ -75,16 +77,16 @@ function Debug() {
     const toggleRun = () => setIsRunning(!isRunning);
 
     return (
-        <div style={{ padding: '32px', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '16px', padding: '8px', background: '#252526', width: 'fit-content' }}>
+        <div className="debug-container">
+            <div className="debug-toolbar">
                 <button
                     onClick={toggleRun}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: isRunning ? '#ebcd28' : '#60d660', display: 'flex' }}
+                    className={`debug-btn ${isRunning ? 'debug-btn-pause' : 'debug-btn-play'}`}
                     title={isRunning ? "Pause" : "Continue"}
                 >
                     {isRunning ? <Pause size={20} /> : <Play size={20} />}
                 </button>
-                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#a0a0a0' }} title="Step Over">
+                <button className="debug-btn debug-btn-step" title="Step Over">
                     <StepForward size={20} />
                 </button>
                 <button
@@ -92,7 +94,7 @@ function Debug() {
                         setIsRunning(true);
                         setDebugData(prev => ({ ...prev, activeConnections: 0, memoryUsage: '128 MB' }));
                     }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#569cd6' }}
+                    className="debug-btn debug-btn-restart"
                     title="Restart"
                 >
                     <RotateCcw size={20} />
@@ -100,19 +102,19 @@ function Debug() {
             </div>
 
             <div style={{ flex: 1 }}>
-                <h2 style={{ fontSize: '14px', color: '#ccc', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Variables</h2>
-                <div style={{ border: '1px solid #3c3c3c', padding: '16px', background: '#1e1e1e' }}>
+                <h2 className="debug-section-title">Variables</h2>
+                <div className="debug-variables-panel">
                     <JsonCode variableName="debugSession" data={debugData} />
                 </div>
             </div>
 
             <div style={{ marginTop: '24px' }}>
-                <h2 style={{ fontSize: '14px', color: '#ccc', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Call Stack</h2>
-                <div style={{ fontFamily: 'Consolas, monospace', color: '#a0a0a0', fontSize: '13px' }}>
-                    <div style={{ padding: '4px 0' }}>RequestController.handle (app.ts:45)</div>
-                    <div style={{ padding: '4px 0' }}>Middleware.logger (middleware.ts:12)</div>
-                    <div style={{ padding: '4px 0' }}>Server.listen (index.ts:102)</div>
-                    <div style={{ padding: '4px 0', opacity: 0.6 }}>Object.wait (native)</div>
+                <h2 className="debug-section-title">Call Stack</h2>
+                <div className="debug-callstack">
+                    <div className="callstack-item">RequestController.handle (app.ts:45)</div>
+                    <div className="callstack-item">Middleware.logger (middleware.ts:12)</div>
+                    <div className="callstack-item">Server.listen (index.ts:102)</div>
+                    <div className="callstack-item" style={{ opacity: 0.6 }}>Object.wait (native)</div>
                 </div>
             </div>
         </div>

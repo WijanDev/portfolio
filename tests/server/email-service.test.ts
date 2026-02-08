@@ -1,21 +1,7 @@
-// Mock createServerFn to bypass framework logic
-vi.mock('@tanstack/react-start', () => {
-    return {
-        createServerFn: () => ({
-            inputValidator: () => ({
-                handler: (handler: any) => async (data: any) => {
-                    return handler(data)
-                }
-            })
-        })
-    }
-})
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { sendEmail } from '@/server/send-email'
-// We import real things but we mocked them
+import { emailHandler } from '@/server/email-service'
 import { TransactionalEmailsApi, SendSmtpEmail } from '@getbrevo/brevo'
-// ... (rest of file)
 
 vi.mock('@getbrevo/brevo', () => {
     const sendTransacEmail = vi.fn();
@@ -29,11 +15,10 @@ vi.mock('@getbrevo/brevo', () => {
         }
     });
 
-    // Attach spies
+    // Attach spies to the mock class itself so we can access them in tests
     (TransactionalEmailsApi as any).sendTransacEmail = sendTransacEmail;
     (TransactionalEmailsApi as any).setApiKey = setApiKey;
 
-    // Use function declaration here too just in case
     const SendSmtpEmail = vi.fn(function () { return {} });
     (TransactionalEmailsApi as any).SendSmtpEmail = SendSmtpEmail;
 
@@ -44,7 +29,7 @@ vi.mock('@getbrevo/brevo', () => {
     }
 })
 
-describe('sendEmail Server Function', () => {
+describe('Email Service', () => {
     const mocks = {
         sendTransacEmail: (TransactionalEmailsApi as any).sendTransacEmail,
         setApiKey: (TransactionalEmailsApi as any).setApiKey,
@@ -66,7 +51,7 @@ describe('sendEmail Server Function', () => {
             message: 'Hello World',
         }
 
-        const result: any = await sendEmail({ data: input })
+        const result: any = await emailHandler({ data: input })
 
         expect(result).toEqual({
             success: true,
@@ -100,7 +85,7 @@ describe('sendEmail Server Function', () => {
             message: 'Hello',
         }
 
-        const result: any = await sendEmail({ data: input })
+        const result: any = await emailHandler({ data: input })
 
         expect(result).toEqual({
             success: false,
@@ -117,11 +102,46 @@ describe('sendEmail Server Function', () => {
             message: 'Hello',
         }
 
-        const result: any = await sendEmail({ data: input })
+        const result: any = await emailHandler({ data: input })
 
         expect(result).toEqual({
             success: false,
             error: 'Network Error',
+        })
+    })
+
+    it('uses default config when env vars are missing', async () => {
+        delete process.env.BREVO_API_KEY
+        delete process.env.CONTACT_EMAIL
+        mocks.sendTransacEmail.mockResolvedValue({ body: { messageId: 'msg-defaults' } })
+
+        const input = {
+            name: 'Test',
+            email: 'test@test.com',
+            message: 'Msg',
+        }
+
+        await emailHandler({ data: input })
+
+        expect(mocks.setApiKey).toHaveBeenCalledWith('apiKey', '')
+        const emailObj = mocks.sendTransacEmail.mock.calls[0][0]
+        expect(emailObj.sender.email).toBe('contact@wijan.dev')
+    })
+
+    it('handles error with no message properties', async () => {
+        mocks.sendTransacEmail.mockRejectedValue({}) // Empty object
+
+        const input = {
+            name: 'Test',
+            email: 'test@test.com',
+            message: 'Msg',
+        }
+
+        const result: any = await emailHandler({ data: input })
+
+        expect(result).toEqual({
+            success: false,
+            error: 'Failed to send email',
         })
     })
 })
