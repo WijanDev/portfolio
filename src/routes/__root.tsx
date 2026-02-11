@@ -34,6 +34,18 @@ export const Route = createRootRoute({
       {
         title: 'wijan.dev',
       },
+      {
+        name: 'description',
+        content: 'Portfolio of Wijan Ruiz-Mok',
+      },
+      {
+        name: 'keywords',
+        content: 'Portfolio, Wijan, SoftwareEngineer'
+      },
+      {
+        name: 'author',
+        content: 'Wijan Ruiz-Mok'
+      }
     ],
     links: [
       {
