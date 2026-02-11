@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ExternalLink, GitBranch } from 'lucide-react'
+import { ProjectComponent } from '@/components/ProjectComponent'
 
 export const Route = createFileRoute('/projects')({ component: Projects })
 
@@ -27,27 +27,7 @@ function Projects() {
 
             <div className="projects-grid">
                 {projects.map((project, index) => (
-                    <div key={index} className="project-card">
-                        <h3 className="project-title">{project.title}</h3>
-                        <p className="project-desc">{project.description}</p>
-
-                        <div className="project-tags">
-                            {project.tags.map(tag => (
-                                <span key={tag} className="tag">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="project-links">
-                            <a href={project.github} className="project-link">
-                                <GitBranch size={14} style={{ marginRight: '4px' }} /> Code
-                            </a>
-                            <a href={project.link} className="project-link">
-                                <ExternalLink size={14} style={{ marginRight: '4px' }} /> Live Demo
-                            </a>
-                        </div>
-                    </div>
+                    <ProjectComponent key={index} {...project} />
                 ))}
             </div>
 
