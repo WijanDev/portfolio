@@ -25,7 +25,7 @@ export default function Layout({ children }: Readonly<LayoutProps>) {
 
     return (
         <div className="app-container">
-            <div className="main-content">
+            <main className="main-content">
                 <ActivityBar
                     isExplorerOpen={isExplorerOpen}
                     setIsExplorerOpen={setIsExplorerOpen}
@@ -42,7 +42,7 @@ export default function Layout({ children }: Readonly<LayoutProps>) {
                         {children}
                     </div>
                 </div>
-            </div>
+            </main>
 
             <StatusBar />
         </div>
