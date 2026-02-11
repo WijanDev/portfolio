@@ -1,11 +1,25 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import favicon from '@/favicon.png'
-
 import Layout from '@components/Layout'
-
 import appCss from '../styles.css?url'
+import React from 'react'
+
+const TanStackDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null
+    : React.lazy(() =>
+      import('@tanstack/react-devtools').then((res) => ({
+        default: res.TanStackDevtools,
+      })),
+    )
+
+const TanStackRouterDevtoolsPanel = React.lazy(() =>
+  import('@tanstack/react-router-devtools').then((res) => ({
+    default: res.TanStackRouterDevtoolsPanel,
+  })),
+)
+
+
 
 export const Route = createRootRoute({
   head: () => ({
