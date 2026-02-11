@@ -7,11 +7,11 @@ function Projects() {
 
     const projects = [
         {
-            title: 'Under Construction',
-            description: 'This page is currently under construction.',
-            tags: ['Under Construction'],
-            link: '#',
-            github: '#'
+            title: 'Toolbox',
+            description: 'A collection of tools for finances and developers.',
+            tags: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Start'],
+            link: 'https://toolbox.wijan.dev',
+            github: 'https://github.com/WijanDev/toolbox'
         },
     ]
 
