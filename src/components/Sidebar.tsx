@@ -2,12 +2,22 @@ import { ChevronDown, ChevronRight, FileCode, FileJson, FileType, Folder } from 
 import { Link, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
 
-export default function Sidebar() {
+interface SidebarProps {
+    onItemClick?: () => void;
+}
+
+export default function Sidebar({ onItemClick }: Readonly<SidebarProps>) {
     const [isOpen, setIsOpen] = useState(true);
     const [isSrcOpen, setIsSrcOpen] = useState(true);
     const location = useLocation();
 
     const isActive = (path: string) => location.pathname === path;
+
+    const handleItemClick = () => {
+        if (onItemClick) {
+            onItemClick();
+        }
+    };
 
     return (
         <div className="sidebar">
@@ -39,24 +49,40 @@ export default function Sidebar() {
 
                         {isSrcOpen && (
                             <>
-                                <Link to="/" className={`file-item ${isActive('/') ? 'active' : ''}`}>
+                                <Link
+                                    to="/"
+                                    className={`file-item ${isActive('/') ? 'active' : ''}`}
+                                    onClick={handleItemClick}
+                                >
                                     <FileCode size={16} className="icon-html" />
                                     <span>readme.md</span>
                                 </Link>
 
-                                <Link to="/projects" className={`file-item ${isActive('/projects') ? 'active' : ''}`}>
+                                <Link
+                                    to="/projects"
+                                    className={`file-item ${isActive('/projects') ? 'active' : ''}`}
+                                    onClick={handleItemClick}
+                                >
                                     <FileCode size={16} className="icon-react" />
                                     <span>projects.tsx</span>
                                 </Link>
 
-                                <Link to="/contact" className={`file-item ${isActive('/contact') ? 'active' : ''}`}>
+                                <Link
+                                    to="/contact"
+                                    className={`file-item ${isActive('/contact') ? 'active' : ''}`}
+                                    onClick={handleItemClick}
+                                >
                                     <FileType size={16} className="icon-css" />
                                     <span>contact.css</span>
                                 </Link>
                             </>
                         )}
 
-                        <Link to="/package" className={`file-item ${isActive('/package') ? 'active' : ''}`}>
+                        <Link
+                            to="/package"
+                            className={`file-item ${isActive('/package') ? 'active' : ''}`}
+                            onClick={handleItemClick}
+                        >
                             <FileJson size={16} className="icon-json" />
                             <span>package.json</span>
                         </Link>

@@ -23,6 +23,12 @@ export default function Layout({ children }: Readonly<LayoutProps>) {
 
     const toggleExplorer = () => setIsExplorerOpen(!isExplorerOpen);
 
+    const handleSidebarItemClick = () => {
+        if (window.innerWidth <= 768) {
+            setIsExplorerOpen(false);
+        }
+    };
+
     return (
         <div className="app-container">
             <main className="main-content">
@@ -32,7 +38,7 @@ export default function Layout({ children }: Readonly<LayoutProps>) {
                     onToggleExplorer={toggleExplorer}
                     lastVisitedPath={lastVisitedPath}
                 />
-                {isExplorerOpen && <Sidebar />}
+                {isExplorerOpen && <Sidebar onItemClick={handleSidebarItemClick} />}
 
                 <div className="editor-container">
                     <ThemeToggle />

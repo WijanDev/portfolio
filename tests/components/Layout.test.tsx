@@ -18,7 +18,13 @@ vi.mock('@/components/ActivityBar', () => ({
         </div>
     )
 }));
-vi.mock('@/components/Sidebar', () => ({ default: () => <div data-testid="sidebar">Sidebar</div> }));
+vi.mock('@/components/Sidebar', () => ({
+    default: ({ onItemClick }: any) => (
+        <div data-testid="sidebar">
+            <button onClick={onItemClick}>Select Item</button>
+        </div>
+    )
+}));
 vi.mock('@/components/StatusBar', () => ({ default: () => <div data-testid="status-bar">StatusBar</div> }));
 vi.mock('@/components/Tabs', () => ({ default: () => <div data-testid="tabs">Tabs</div> }));
 vi.mock('@/components/ThemeToggle', () => ({ default: () => <div data-testid="theme-toggle">ThemeToggle</div> }));
@@ -73,5 +79,49 @@ describe('Layout Component', () => {
         rerender(<Layout>Content</Layout>);
 
         expect(activityBar.dataset.lastVisited).toBe('/contact');
-    })
+    });
+
+    it('closes sidebar on mobile when item is clicked', () => {
+        // Mock mobile viewport
+        global.innerWidth = 500;
+        fireEvent(window, new Event('resize'));
+
+        (useLocation as any).mockReturnValue({ pathname: '/' });
+        render(<Layout>Content</Layout>);
+
+        // Sidebar is open initially
+        const sidebar = screen.getByTestId('sidebar');
+        expect(sidebar).toBeTruthy();
+
+        // Find the button inside mocked Sidebar that triggers onItemClick
+        const selectItemBtn = screen.getByText('Select Item');
+
+        // Click it
+        fireEvent.click(selectItemBtn);
+
+        // Expect sidebar to be gone
+        expect(screen.queryByTestId('sidebar')).toBeNull();
+    });
+
+    it('keeps sidebar open on desktop when item is clicked', () => {
+        // Mock desktop viewport
+        global.innerWidth = 1024;
+        fireEvent(window, new Event('resize'));
+
+        (useLocation as any).mockReturnValue({ pathname: '/' });
+        render(<Layout>Content</Layout>);
+
+        // Sidebar is open initially
+        const sidebar = screen.getByTestId('sidebar');
+        expect(sidebar).toBeTruthy();
+
+        // Find the button inside mocked Sidebar that triggers onItemClick
+        const selectItemBtn = screen.getByText('Select Item');
+
+        // Click it
+        fireEvent.click(selectItemBtn);
+
+        // Expect sidebar to still be there
+        expect(screen.getByTestId('sidebar')).toBeTruthy();
+    });
 });
