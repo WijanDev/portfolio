@@ -87,8 +87,8 @@ describe('Layout Component', () => {
         (useLocation as any).mockReturnValue({ pathname: '/' });
 
         // Mock window.innerWidth
-        const originalInnerWidth = window.innerWidth;
-        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
+        const originalInnerWidth = globalThis.innerWidth;
+        Object.defineProperty(globalThis, 'innerWidth', { writable: true, configurable: true, value: 500 });
 
         render(<Layout>Content</Layout>);
 
@@ -97,35 +97,33 @@ describe('Layout Component', () => {
         // Initial mobile state: hidden (isMobileExplorerOpen defaults to false)
         // Check data-mobile-open is "false"
         const sidebar = screen.getByTestId('sidebar'); // Sidebar renders because isDesktopOpen=true
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+        expect(sidebar.dataset.mobileOpen).toBe('false');
 
         // Click Toggle -> should toggle mobile open
         fireEvent.click(toggleBtn);
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('true');
+        expect(sidebar.dataset.mobileOpen).toBe('true');
 
         // Click Select Item (simulating navigation) -> should close mobile drawer
         const selectItemBtn = screen.getByText('Select Item');
         fireEvent.click(selectItemBtn);
 
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+        expect(sidebar.dataset.mobileOpen).toBe('false');
 
-        // Restore window.innerWidth
-        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
+        Object.defineProperty(globalThis, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
     });
 
     it('handles desktop sidebar interactions', () => {
         (useLocation as any).mockReturnValue({ pathname: '/' });
 
-        // Mock window.innerWidth to Desktop
-        const originalInnerWidth = window.innerWidth;
-        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
+        const originalInnerWidth = globalThis.innerWidth;
+        Object.defineProperty(globalThis, 'innerWidth', { writable: true, configurable: true, value: 1024 });
 
         render(<Layout>Content</Layout>);
 
         const sidebar = screen.getByTestId('sidebar');
 
         // Ensure we are in desktop mode (data-mobile-open should be false initially)
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+        expect(sidebar.dataset.mobileOpen).toBe('false');
 
         // Click Select Item
         const selectItemBtn = screen.getByText('Select Item');
@@ -133,7 +131,7 @@ describe('Layout Component', () => {
 
         // Should remain closed (false) - verifying that setMobileOpen(false) wasn't called/didn't change state
         // In desktop mode, clicking an item shouldn't affect mobile state or toggle visibility
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+        expect(sidebar.dataset.mobileOpen).toBe('false');
 
         // Toggle button in desktop mode should toggle isExplorerOpen, NOT isMobileExplorerOpen
         // We can't easily check isExplorerOpen state directly via the mock which ORs them.
@@ -142,9 +140,8 @@ describe('Layout Component', () => {
         const toggleBtn = screen.getByText('Toggle');
         fireEvent.click(toggleBtn);
 
-        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+        expect(sidebar.dataset.mobileOpen).toBe('false');
 
-        // Restore window.innerWidth
-        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
+        Object.defineProperty(globalThis, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
     });
 });

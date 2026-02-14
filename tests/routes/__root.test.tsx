@@ -121,7 +121,7 @@ describe('Root Route', () => {
 
             // The type of the element should be the component function () => null
             expect(typeof DevtoolsElement.type).toBe('function');
-            expect((DevtoolsElement.type as any)({})).toBeNull();
+            expect((DevtoolsElement.type)({})).toBeNull();
 
         } finally {
             process.env.NODE_ENV = originalEnv;

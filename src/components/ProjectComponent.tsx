@@ -8,7 +8,7 @@ export interface ProjectComponentProps {
     github: string;
 }
 
-export function ProjectComponent({ title, description, tags, link, github }: ProjectComponentProps) {
+export function ProjectComponent({ title, description, tags, link, github }: Readonly<ProjectComponentProps>) {
     return (
         <div className="bg-[var(--vscode-sidebar-bg)] p-4 border border-[var(--vscode-border)] transition-colors hover:border-[var(--vscode-status-bar-bg)] flex flex-col">
             <h3 className="text-lg font-bold text-[#4fc1ff] mb-2">{title}</h3>

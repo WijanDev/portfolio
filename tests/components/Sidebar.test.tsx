@@ -5,7 +5,7 @@ import Sidebar from '@/components/Sidebar'
 
 vi.mock('@tanstack/react-router', () => ({
     useLocation: vi.fn(),
-    Link: ({ children, className, onClick, ...props }: any) => <div className={className} onClick={onClick} {...props}>{children}</div>,
+    Link: ({ children, className, onClick, ...props }: any) => <button className={className} onClick={onClick} {...props}>{children}</button>,
 }));
 
 vi.mock('@/components/ui/drawer', () => ({
