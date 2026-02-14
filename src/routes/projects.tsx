@@ -16,22 +16,22 @@ function Projects() {
     ]
 
     return (
-        <div className="projects-container">
-            <h2 className="projects-header">
-                <span className="token-keyword">const</span>{' '}
-                <span className="token-function">Projects</span>{' '}
-                <span className="token-operator">=</span>{' '}
-                <span className="token-paren">()</span>{' '}
-                <span className="token-keyword">{'=>'}</span>
+        <div className="p-[30px]">
+            <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-[var(--vscode-border)] font-mono">
+                <span className="text-[var(--vscode-token-keyword)]">const</span>{' '}
+                <span className="text-[var(--vscode-token-variable)]">Projects</span>{' '}
+                <span className="text-[var(--vscode-token-punctuation)]">=</span>{' '}
+                <span className="text-[var(--vscode-token-keyword)]">()</span>{' '}
+                <span className="text-[var(--vscode-token-keyword)]">{'=>'}</span>
             </h2>
 
-            <div className="projects-grid">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
                 {projects.map((project, index) => (
                     <ProjectComponent key={index} {...project} />
                 ))}
             </div>
 
-            <div style={{ marginTop: '24px' }} className="token-comment">
+            <div className="mt-6 text-[var(--vscode-token-comment)] italic">
                 {'// More projects coming soon.'}
             </div>
         </div>

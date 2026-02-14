@@ -8,15 +8,15 @@ export default function CssCode({ selector, content }: Readonly<CssCodeProps>) {
     const getRenderedValue = (value: string | number | { text: string; url: string }) => {
         if (typeof value === 'object' && value !== null) {
             return (
-                <span className="token-string">
-                    '<a href={value.url} target="_blank" rel="noopener noreferrer" style={{ color: '#ce9178', textDecoration: 'underline' }}>{value.text}</a>'
+                <span className="text-[var(--vscode-token-string)]">
+                    '<a href={value.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--vscode-token-string)', textDecoration: 'underline' }}>{value.text}</a>'
                 </span>
             );
         } else if (typeof value === 'number') {
-            return <span className="token-number">{value}</span>;
+            return <span className="text-[var(--vscode-token-number)]">{value}</span>;
         } else {
             return (
-                <span className="token-string">
+                <span className="text-[var(--vscode-token-string)]">
                     {/* Check if value looks like a number with unit, or a quoted string */}
                     {value.toString().startsWith("'") ? value : `'${value}'`}
                 </span>
@@ -25,24 +25,24 @@ export default function CssCode({ selector, content }: Readonly<CssCodeProps>) {
     }
 
     return (
-        <div style={{ marginBottom: '16px', fontFamily: 'Consolas, monospace', lineHeight: '1.5' }}>
-            <span className="token-variable" style={{ color: '#d7ba7d' }}>{selector}</span>{' '}
-            <span className="token-bracket">{'{'}</span>
+        <div className="mb-4 font-mono leading-relaxed text-[var(--vscode-fg)]">
+            <span className="text-[var(--vscode-token-type)]">{selector}</span>{' '}
+            <span className="text-[var(--vscode-token-punctuation)]">{'{'}</span>
 
             {Object.entries(content).map(([property, value]) => {
                 const renderedValue = getRenderedValue(value);
 
                 return (
                     <div key={property} style={{ paddingLeft: '32px' }}>
-                        <span className="token-property">{property}</span>
-                        <span className="token-punctuation">:</span>{' '}
+                        <span className="text-[var(--vscode-token-variable)]">{property}</span>
+                        <span className="text-[var(--vscode-token-punctuation)]">:</span>{' '}
                         {renderedValue}
-                        <span className="token-punctuation">;</span>
+                        <span className="text-[var(--vscode-token-punctuation)]">;</span>
                     </div>
                 );
             })}
 
-            <span className="token-bracket">{'}'}</span>
+            <span className="text-[var(--vscode-token-punctuation)]">{'}'}</span>
         </div>
     );
 }

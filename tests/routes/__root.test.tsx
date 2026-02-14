@@ -43,15 +43,6 @@ describe('Root Route', () => {
         const layout = bodyChildren[0];
 
         expect(layout.type).not.toBeNull();
-        // We mocked Layout to just render children in a div with data-testid="layout"
-        // But here we are checking the React Element, so we check the type/props
-
-        // Since we mocked Layout with a default export in the test file, 
-        // we can check if it rendered the Layout component.
-        // The mocked component is imported as default from '@/components/Layout'
-
-        // Actually, let's just check that we have the structure we expect.
-        // The RootComponent renders: html > body > Layout > children
 
         expect(layout.props.children).toEqual(<div data-testid="outlet" />);
 
@@ -86,16 +77,6 @@ describe('Root Route', () => {
         // html -> body -> [Layout, TanStackDevtools, Scripts]
         // result.props.children[1] is body. children of body is array.
         const bodyChildren = result.props.children[1].props.children;
-        const TanStackDevtools = bodyChildren[1]; // It's the component type (Lazy)
-
-        // Find TanStackRouterDevtoolsPanel in the props of TanStackDevtools
-        // It is passed in the plugins array
-        // <TanStackDevtools config={...} plugins={[{ ..., render: <TanStackRouterDevtoolsPanel /> }]} />
-        // Note: checking React Element props structure
-        // Since TanStackDevtools is a component, in the shallow-like result from RootComponent, 
-        // we actually have the React Element for TanStackDevtools because RootComponent calls it as a component?
-        // Wait, RootComponent returns JSX: <TanStackDevtools ... />
-        // So bodyChildren[1] is the ELEMENT <TanStackDevtools />
 
         const DevtoolsElement = bodyChildren[1];
         const LazyDevtoolsComponent = DevtoolsElement.type;
@@ -106,21 +87,21 @@ describe('Root Route', () => {
         // Now render them to trigger the Lazy load
         // We use 'render' from testing-library, inside Suspense
         render(
-            <React.Suspense fallback={null}>
+            <React.Suspense fallback={<div data-testid="loading">Loading...</div>}>
                 <LazyDevtoolsComponent />
                 {routerDevtoolsElement}
             </React.Suspense>
         );
 
-        // Wait for them to load (though mocks resolve immediately)
-        // We can check if the mocks were called maybe?
-        // But verifying they rendered without error is enough to cover the import lines.
+        // Wait for the lazy component (which is mocked to return null) to resolve.
+        // Since our mock returns null, we can't search for it directly.
+        // However, we can update the mock in this test to return something searchable.
+        // But since we can't easily change the mock mid-test for the lazy import without complex setup,
+        // let's rely on the fact that the suspense fallback should disappear.
 
-        // We can verify that the mocks were imported by strictly checking the side effects if needed
-        // but coverage tool just needs the lines executed.
-
-        // Just purely waiting to ensure promises resolve
-        await waitFor(() => expect(screen.queryAllByTestId('nothing')).toHaveLength(0));
+        await waitFor(() => {
+            expect(screen.queryByTestId('loading')).toBeNull();
+        });
     });
 
     it('checks production environment', async () => {

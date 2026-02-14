@@ -19,10 +19,10 @@ describe('Tabs Component', () => {
         render(<Tabs />);
 
         const homeTab = screen.getByText('home.tsx').closest('a');
-        expect(homeTab?.className).toContain('active');
+        expect(homeTab?.className).toContain('bg-[var(--vscode-bg)]');
 
         const projectsTab = screen.getByText('projects.tsx').closest('a');
-        expect(projectsTab?.className).not.toContain('active');
+        expect(projectsTab?.className).not.toContain('bg-[var(--vscode-bg)]');
     });
 
     it('renders all tabs', () => {
@@ -35,6 +35,6 @@ describe('Tabs Component', () => {
 
         // Check active tab matches mock
         const projectsTab = screen.getByText('projects.tsx').closest('a');
-        expect(projectsTab?.className).toContain('active');
+        expect(projectsTab?.className).toContain('bg-[var(--vscode-bg)]');
     });
 });

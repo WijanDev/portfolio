@@ -19,10 +19,12 @@ vi.mock('@/components/ActivityBar', () => ({
     )
 }));
 vi.mock('@/components/Sidebar', () => ({
-    default: ({ onItemClick }: any) => (
-        <div data-testid="sidebar">
-            <button onClick={onItemClick}>Select Item</button>
-        </div>
+    default: ({ onItemClick, isDesktopOpen, isMobileOpen }: any) => (
+        (isDesktopOpen || isMobileOpen) ? (
+            <div data-testid="sidebar" data-mobile-open={isMobileOpen}>
+                <button onClick={onItemClick}>Select Item</button>
+            </div>
+        ) : null
     )
 }));
 vi.mock('@/components/StatusBar', () => ({ default: () => <div data-testid="status-bar">StatusBar</div> }));
@@ -38,7 +40,7 @@ describe('Layout Component', () => {
         expect(screen.getByTestId('sidebar')).toBeTruthy();
         expect(screen.getByTestId('tabs')).toBeTruthy();
         expect(screen.getByTestId('status-bar')).toBeTruthy();
-        expect(screen.getByTestId('theme-toggle')).toBeTruthy();
+        // ThemeToggle is inside ActivityBar, which is mocked and does not render children/slots in this mock
         expect(screen.getByText('Child Content')).toBeTruthy();
     });
 
@@ -81,47 +83,68 @@ describe('Layout Component', () => {
         expect(activityBar.dataset.lastVisited).toBe('/contact');
     });
 
-    it('closes sidebar on mobile when item is clicked', () => {
-        // Mock mobile viewport
-        global.innerWidth = 500;
-        fireEvent(window, new Event('resize'));
-
+    it('handles mobile sidebar interactions', () => {
         (useLocation as any).mockReturnValue({ pathname: '/' });
+
+        // Mock window.innerWidth
+        const originalInnerWidth = window.innerWidth;
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
+
         render(<Layout>Content</Layout>);
 
-        // Sidebar is open initially
-        const sidebar = screen.getByTestId('sidebar');
-        expect(sidebar).toBeTruthy();
+        const toggleBtn = screen.getByText('Toggle');
 
-        // Find the button inside mocked Sidebar that triggers onItemClick
+        // Initial mobile state: hidden (isMobileExplorerOpen defaults to false)
+        // Check data-mobile-open is "false"
+        const sidebar = screen.getByTestId('sidebar'); // Sidebar renders because isDesktopOpen=true
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+
+        // Click Toggle -> should toggle mobile open
+        fireEvent.click(toggleBtn);
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('true');
+
+        // Click Select Item (simulating navigation) -> should close mobile drawer
         const selectItemBtn = screen.getByText('Select Item');
-
-        // Click it
         fireEvent.click(selectItemBtn);
 
-        // Expect sidebar to be gone
-        expect(screen.queryByTestId('sidebar')).toBeNull();
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+
+        // Restore window.innerWidth
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
     });
 
-    it('keeps sidebar open on desktop when item is clicked', () => {
-        // Mock desktop viewport
-        global.innerWidth = 1024;
-        fireEvent(window, new Event('resize'));
-
+    it('handles desktop sidebar interactions', () => {
         (useLocation as any).mockReturnValue({ pathname: '/' });
+
+        // Mock window.innerWidth to Desktop
+        const originalInnerWidth = window.innerWidth;
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
+
         render(<Layout>Content</Layout>);
 
-        // Sidebar is open initially
         const sidebar = screen.getByTestId('sidebar');
-        expect(sidebar).toBeTruthy();
 
-        // Find the button inside mocked Sidebar that triggers onItemClick
+        // Ensure we are in desktop mode (data-mobile-open should be false initially)
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+
+        // Click Select Item
         const selectItemBtn = screen.getByText('Select Item');
-
-        // Click it
         fireEvent.click(selectItemBtn);
 
-        // Expect sidebar to still be there
-        expect(screen.getByTestId('sidebar')).toBeTruthy();
+        // Should remain closed (false) - verifying that setMobileOpen(false) wasn't called/didn't change state
+        // In desktop mode, clicking an item shouldn't affect mobile state or toggle visibility
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+
+        // Toggle button in desktop mode should toggle isExplorerOpen, NOT isMobileExplorerOpen
+        // We can't easily check isExplorerOpen state directly via the mock which ORs them.
+        // But we can check that data-mobile-open remains false.
+
+        const toggleBtn = screen.getByText('Toggle');
+        fireEvent.click(toggleBtn);
+
+        expect(sidebar.getAttribute('data-mobile-open')).toBe('false');
+
+        // Restore window.innerWidth
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: originalInnerWidth });
     });
 });

@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import JsonCode from '@components/JsonCode'
+import JsonCode from '@/components/JsonCode'
 import { Play, Pause, StepForward, RotateCcw } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/debug')({
     component: Debug,
@@ -52,8 +53,6 @@ function Debug() {
         status: getStatus(),
     });
 
-
-
     useEffect(() => {
         let interval: NodeJS.Timeout;
 
@@ -77,16 +76,16 @@ function Debug() {
     const toggleRun = () => setIsRunning(!isRunning);
 
     return (
-        <div className="debug-container">
-            <div className="debug-toolbar">
+        <div className="p-8 h-full flex flex-col">
+            <div className="flex items-center mb-6 gap-4 p-2 bg-[var(--vscode-sidebar-bg)] w-fit border border-[var(--vscode-border)]">
                 <button
                     onClick={toggleRun}
-                    className={`debug-btn ${isRunning ? 'debug-btn-pause' : 'debug-btn-play'}`}
+                    className={cn("bg-transparent border-0 cursor-pointer flex items-center justify-center transition-colors hover:bg-[var(--vscode-hover)] p-1 rounded", isRunning ? "text-[#ebcd28]" : "text-[#60d660]")}
                     title={isRunning ? "Pause" : "Continue"}
                 >
                     {isRunning ? <Pause size={20} /> : <Play size={20} />}
                 </button>
-                <button className="debug-btn debug-btn-step" title="Step Over">
+                <button className="bg-transparent border-0 cursor-pointer flex items-center justify-center transition-colors hover:bg-[var(--vscode-hover)] p-1 rounded text-[var(--vscode-fg)] opacity-70" title="Step Over">
                     <StepForward size={20} />
                 </button>
                 <button
@@ -94,27 +93,27 @@ function Debug() {
                         setIsRunning(true);
                         setDebugData(prev => ({ ...prev, activeConnections: 0, memoryUsage: '128 MB' }));
                     }}
-                    className="debug-btn debug-btn-restart"
+                    className="bg-transparent border-0 cursor-pointer flex items-center justify-center transition-colors hover:bg-[var(--vscode-hover)] p-1 rounded text-[var(--vscode-token-keyword)]"
                     title="Restart"
                 >
                     <RotateCcw size={20} />
                 </button>
             </div>
 
-            <div style={{ flex: 1 }}>
-                <h2 className="debug-section-title">Variables</h2>
-                <div className="debug-variables-panel">
+            <div className="flex-1">
+                <h2 className="text-sm text-[var(--vscode-fg)] mb-2 uppercase tracking-[1px] opacity-70">Variables</h2>
+                <div className="border border-[var(--vscode-border)] p-4 bg-[var(--vscode-bg)]">
                     <JsonCode variableName="debugSession" data={debugData} />
                 </div>
             </div>
 
-            <div style={{ marginTop: '24px' }}>
-                <h2 className="debug-section-title">Call Stack</h2>
-                <div className="debug-callstack">
-                    <div className="callstack-item">RequestController.handle (app.ts:45)</div>
-                    <div className="callstack-item">Middleware.logger (middleware.ts:12)</div>
-                    <div className="callstack-item">Server.listen (index.ts:102)</div>
-                    <div className="callstack-item" style={{ opacity: 0.6 }}>Object.wait (native)</div>
+            <div className="mt-6">
+                <h2 className="text-sm text-[var(--vscode-fg)] mb-2 uppercase tracking-[1px] opacity-70">Call Stack</h2>
+                <div className="font-mono text-[var(--vscode-fg)] text-[13px] opacity-80">
+                    <div className="py-1">RequestController.handle (app.ts:45)</div>
+                    <div className="py-1">Middleware.logger (middleware.ts:12)</div>
+                    <div className="py-1">Server.listen (index.ts:102)</div>
+                    <div className="py-1 opacity-60">Object.wait (native)</div>
                 </div>
             </div>
         </div>

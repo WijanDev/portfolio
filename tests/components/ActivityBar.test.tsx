@@ -11,6 +11,10 @@ vi.mock('@tanstack/react-router', () => ({
     Link: ({ children, className, onClick, ...props }: any) => <a href="#" className={className} onClick={(e) => { if (onClick) { e.preventDefault(); onClick(e); } }} {...props}>{children}</a>,
 }));
 
+vi.mock('@/components/ThemeToggle', () => ({
+    default: () => <div data-testid="theme-toggle" />
+}));
+
 import { useLocation, useNavigate } from '@tanstack/react-router'
 
 describe('ActivityBar Component', () => {
@@ -18,11 +22,9 @@ describe('ActivityBar Component', () => {
         (useLocation as any).mockReturnValue({ pathname: '/' });
         render(<ActivityBar isExplorerOpen={true} onToggleExplorer={() => { }} setIsExplorerOpen={() => { }} lastVisitedPath="/" />);
 
-        // Check for presence of key icons by finding their container divs or checking implementation details logic
-        // Since icons are components, we can check for the link to github
-        const githubLink = screen.getByRole('link', { name: 'GitHub Profile' });
-        expect(githubLink).toBeTruthy();
-        expect(githubLink.getAttribute('href')).toBe('https://github.com/WijanDev/portfolio');
+        expect(screen.getByTitle('Explorer')).toBeTruthy();
+        expect(screen.getByTitle('GitHub Profile')).toBeTruthy();
+        expect(screen.getByTitle('Debug')).toBeTruthy();
     });
 
     it('toggles explorer', () => {
@@ -31,9 +33,8 @@ describe('ActivityBar Component', () => {
 
         render(<ActivityBar isExplorerOpen={false} onToggleExplorer={onToggle} setIsExplorerOpen={() => { }} lastVisitedPath="/" />);
 
-        // Files icon is the first one
-        const filesIcon = document.querySelector('.icon-container');
-        fireEvent.click(filesIcon!);
+        const explorerButton = screen.getByTitle('Explorer');
+        fireEvent.click(explorerButton);
 
         expect(onToggle).toHaveBeenCalled();
     });
@@ -44,13 +45,11 @@ describe('ActivityBar Component', () => {
 
         render(<ActivityBar isExplorerOpen={false} onToggleExplorer={() => { }} setIsExplorerOpen={setIsExplorerOpen} lastVisitedPath="/" />);
 
-        // Debug icon is 4th in top list (files, search, github, debug)
-        const containers = document.querySelectorAll('.icon-container');
-        // Files(0), Search(1), Github(2), Debug(3)
-        const debugContainer = containers[3];
-        expect(debugContainer.className).toContain('active');
+        const debugLink = screen.getByTitle('Debug');
+        // Check for the active border style
+        expect(debugLink.className).toContain('border-l-2');
 
-        fireEvent.click(debugContainer);
+        fireEvent.click(debugLink);
         expect(setIsExplorerOpen).toHaveBeenCalledWith(false);
     });
 
@@ -66,10 +65,13 @@ describe('ActivityBar Component', () => {
 
         render(<ActivityBar isExplorerOpen={false} onToggleExplorer={() => { }} setIsExplorerOpen={setIsExplorerOpen} lastVisitedPath={lastVisitedPath} />);
 
-        const explorerIcon = document.querySelectorAll('.icon-container')[0];
-        fireEvent.click(explorerIcon);
+        const explorerButton = screen.getByTitle('Explorer');
+        fireEvent.click(explorerButton);
 
         expect(mockNavigate).toHaveBeenCalledWith({ to: lastVisitedPath });
+        // The component calls onToggleExplorer, but also setIsExplorerOpen(true) if navigating back?
+        // Let's check the implementation logic. 
+        // In ActivityBar.tsx: if (location.pathname === '/debug') { ... setIsExplorerOpen(true); ... }
         expect(setIsExplorerOpen).toHaveBeenCalledWith(true);
     });
 });

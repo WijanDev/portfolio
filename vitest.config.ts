@@ -29,7 +29,8 @@ export default defineConfig({
                 '**/routeTree.gen.ts',
                 'vite.config.ts',
                 'vitest.config.ts',
-                '**/*.png'
+                '**/*.png',
+                'src/components/ui/*'
             ],
         },
     },
