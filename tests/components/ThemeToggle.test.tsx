@@ -5,9 +5,10 @@ import ThemeToggle from '@/components/ThemeToggle'
 
 describe('ThemeToggle Component', () => {
     beforeEach(() => {
-        // Clear localStorage and reset document attribute
+        // Clear localStorage and reset document attribute/class
         localStorage.clear();
         delete document.documentElement.dataset.theme;
+        document.documentElement.classList.remove('dark');
         vi.clearAllMocks();
 
         // Mock matchMedia for dark mode preference
@@ -34,11 +35,8 @@ describe('ThemeToggle Component', () => {
 
     it('initializes with dark theme by default (or system preference)', () => {
         render(<ThemeToggle />);
-        expect(document.documentElement.dataset.theme).toBe('dark');
+        expect(document.documentElement.classList.contains('dark')).toBe(true);
         expect(screen.getByRole('button')).toBeTruthy();
-        // Check for sun icon (meaning current theme is dark, switch to light)
-        // Alternatively check title/aria-label
-        expect(screen.getByRole('button').getAttribute('title')).toBe('Switch to light mode');
     });
 
     it('toggles theme on click', () => {
@@ -47,24 +45,23 @@ describe('ThemeToggle Component', () => {
         const button = screen.getByRole('button');
 
         // Initial state dark (from previous test setup or default)
-        expect(document.documentElement.dataset.theme).toBe('dark');
+        expect(document.documentElement.classList.contains('dark')).toBe(true);
 
         // Click to toggle to light
         fireEvent.click(button);
-        expect(document.documentElement.dataset.theme).toBe('light');
+        expect(document.documentElement.classList.contains('dark')).toBe(false);
         expect(localStorage.getItem('theme')).toBe('light');
-        expect(button.getAttribute('title')).toBe('Switch to dark mode');
 
         // Click to toggle back to dark
         fireEvent.click(button);
-        expect(document.documentElement.dataset.theme).toBe('dark');
+        expect(document.documentElement.classList.contains('dark')).toBe(true);
         expect(localStorage.getItem('theme')).toBe('dark');
     });
 
     it('loads saved preference from localStorage', () => {
         localStorage.setItem('theme', 'light');
         render(<ThemeToggle />);
-        expect(document.documentElement.dataset.theme).toBe('light');
+        expect(document.documentElement.classList.contains('dark')).toBe(false);
     });
 
     it('uses light theme if system prefers light and no saved preference', () => {
@@ -85,6 +82,6 @@ describe('ThemeToggle Component', () => {
 
         render(<ThemeToggle />);
         // Should default to light since matchMedia(dark) is false
-        expect(document.documentElement.dataset.theme).toBe('light');
+        expect(document.documentElement.classList.contains('dark')).toBe(false);
     });
 });

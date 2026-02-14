@@ -11,5 +11,6 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "wijandev",
     "projectKey": "WijanDev_portfolio"
-  }
+  },
+  "css.lint.unknownAtRules": "ignore"
 }

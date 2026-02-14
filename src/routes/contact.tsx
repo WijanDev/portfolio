@@ -48,9 +48,9 @@ function Contact() {
     }
 
     return (
-        <div className="contact-container">
-            <div className="contact-info">
-                <div className="token-comment" style={{ marginBottom: '16px' }}>
+        <div className="p-[30px] flex flex-wrap gap-10 max-w-[1000px]">
+            <div className="flex-1 min-w-[300px] font-mono text-sm leading-relaxed">
+                <div className="text-[#6a9955] italic mb-4">
                     {'/* Contact Information */'}
                 </div>
 
@@ -65,49 +65,49 @@ function Contact() {
                 />
             </div>
 
-            <div className="contact-form-container">
+            <div className="flex-1 min-w-[300px] bg-[var(--vscode-sidebar-bg)] p-6 border border-[var(--vscode-border)]">
                 <div className="contact-form">
-                    <h2>Send Message</h2>
+                    <h2 className="text-xl text-[var(--vscode-fg)] mb-5">Send Message</h2>
                     {status === 'success' && (
-                        <div className="success-message" style={{ color: 'green', marginBottom: '1rem' }}>
+                        <div className="text-green-500 mb-4">
                             Message sent successfully!
                         </div>
                     )}
                     {status === 'error' && (
-                        <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+                        <div className="text-red-500 mb-4">
                             {errorMessage}
                         </div>
                     )}
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name" className="form-label">Name</label>
+                        <div className="mb-4">
+                            <label htmlFor="name" className="block text-xs text-[var(--vscode-fg)] mb-1 opacity-80">Name</label>
                             <input
                                 type="text"
                                 id="name"
-                                className="form-input"
+                                className="w-full bg-[var(--vscode-input-bg)] border border-[var(--vscode-border)] p-2 text-[var(--vscode-input-fg)] font-sans focus:outline focus:outline-1 focus:outline-[var(--vscode-status-bar-bg)] focus:border-[var(--vscode-status-bar-bg)]"
                                 placeholder="Your Name"
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                                 disabled={status === 'submitting'}
                             />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="email" className="form-label">Email</label>
+                        <div className="mb-4">
+                            <label htmlFor="email" className="block text-xs text-[var(--vscode-fg)] mb-1 opacity-80">Email</label>
                             <input
                                 type="email"
                                 id="email"
-                                className="form-input"
+                                className="w-full bg-[var(--vscode-input-bg)] border border-[var(--vscode-border)] p-2 text-[var(--vscode-input-fg)] font-sans focus:outline focus:outline-1 focus:outline-[var(--vscode-status-bar-bg)] focus:border-[var(--vscode-status-bar-bg)]"
                                 placeholder="email@example.com"
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                                 disabled={status === 'submitting'}
                             />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="message" className="form-label">Message</label>
+                        <div className="mb-4">
+                            <label htmlFor="message" className="block text-xs text-[var(--vscode-fg)] mb-1 opacity-80">Message</label>
                             <textarea
                                 id="message"
-                                className="form-textarea"
+                                className="w-full bg-[var(--vscode-input-bg)] border border-[var(--vscode-border)] p-2 text-[var(--vscode-input-fg)] font-sans focus:outline focus:outline-1 focus:outline-[var(--vscode-status-bar-bg)] focus:border-[var(--vscode-status-bar-bg)]"
                                 rows={5}
                                 placeholder="Type your message..."
                                 value={formData.message}
@@ -117,7 +117,7 @@ function Contact() {
                         </div>
                         <button
                             type="submit"
-                            className="submit-btn"
+                            className="bg-[var(--vscode-status-bar-bg)] text-white py-2.5 px-5 border-0 cursor-pointer mt-2 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                             disabled={status === 'submitting'}
                         >
                             {status === 'submitting' ? 'Sending...' : 'Send Message'}

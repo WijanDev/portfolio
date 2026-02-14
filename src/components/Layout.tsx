@@ -4,7 +4,6 @@ import ActivityBar from '@/components/ActivityBar';
 import Sidebar from '@/components/Sidebar';
 import StatusBar from '@/components/StatusBar';
 import Tabs from '@/components/Tabs';
-import ThemeToggle from '@/components/ThemeToggle';
 
 interface LayoutProps {
     children: ReactNode;
@@ -12,6 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: Readonly<LayoutProps>) {
     const [isExplorerOpen, setIsExplorerOpen] = useState(true);
+    const [isMobileExplorerOpen, setIsMobileExplorerOpen] = useState(false);
     const location = useLocation();
     const [lastVisitedPath, setLastVisitedPath] = useState('/');
 
@@ -21,24 +21,41 @@ export default function Layout({ children }: Readonly<LayoutProps>) {
         }
     }, [location.pathname]);
 
-    const toggleExplorer = () => setIsExplorerOpen(!isExplorerOpen);
+    const toggleExplorer = () => {
+        if (window.innerWidth <= 768) {
+            setIsMobileExplorerOpen(!isMobileExplorerOpen);
+        } else {
+            setIsExplorerOpen(!isExplorerOpen);
+        }
+    };
+
+    const handleSidebarItemClick = () => {
+        if (window.innerWidth <= 768) {
+            setIsMobileExplorerOpen(false);
+        }
+    };
 
     return (
-        <div className="app-container">
-            <main className="main-content">
+        <div className="flex h-screen w-screen flex-col bg-[var(--vscode-bg)] text-[var(--vscode-fg)] overflow-hidden">
+            <main className="flex flex-1 overflow-hidden relative">
                 <ActivityBar
                     isExplorerOpen={isExplorerOpen}
                     setIsExplorerOpen={setIsExplorerOpen}
                     onToggleExplorer={toggleExplorer}
                     lastVisitedPath={lastVisitedPath}
                 />
-                {isExplorerOpen && <Sidebar />}
 
-                <div className="editor-container">
-                    <ThemeToggle />
+                <Sidebar
+                    onItemClick={handleSidebarItemClick}
+                    isDesktopOpen={isExplorerOpen}
+                    isMobileOpen={isMobileExplorerOpen}
+                    setMobileOpen={setIsMobileExplorerOpen}
+                />
+
+                <div className="flex flex-col flex-1 bg-[var(--vscode-bg)] h-full relative">
                     <Tabs />
 
-                    <div className="editor-content">
+                    <div className="p-10 overflow-y-auto h-full">
                         {children}
                     </div>
                 </div>

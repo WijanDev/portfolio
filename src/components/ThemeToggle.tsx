@@ -2,7 +2,13 @@
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function ThemeToggle() {
+interface ThemeToggleProps {
+    className?: string;
+    iconClassName?: string;
+    size?: number;
+}
+
+export default function ThemeToggle({ className, iconClassName, size = 18 }: Readonly<ThemeToggleProps>) {
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
     useEffect(() => {
@@ -10,11 +16,11 @@ export default function ThemeToggle() {
         const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
         if (savedTheme) {
             setTheme(savedTheme);
-            document.documentElement.dataset.theme = savedTheme;
+            document.documentElement.classList.toggle('dark', savedTheme === 'dark');
         } else {
             const systemTheme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             setTheme(systemTheme);
-            document.documentElement.dataset.theme = systemTheme;
+            document.documentElement.classList.toggle('dark', systemTheme === 'dark');
         }
     }, []);
 
@@ -22,17 +28,17 @@ export default function ThemeToggle() {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
-        document.documentElement.dataset.theme = newTheme;
+        document.documentElement.classList.toggle('dark', newTheme === 'dark');
     };
 
     return (
         <button
             onClick={toggleTheme}
-            className="theme-toggle-btn"
+            className={className}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === 'dark' ? <Sun size={size} className={iconClassName} /> : <Moon size={size} className={iconClassName} />}
         </button>
     );
 }
