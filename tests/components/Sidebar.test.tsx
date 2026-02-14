@@ -129,8 +129,8 @@ describe('Sidebar Component', () => {
 
         // Click an item (e.g. PORTFOLIO toggle or a file link)
         // Let's click a file link to trigger onItemClick
-        const readmeLink = screen.getByText('readme.md').closest('div');
-        // Note: Link mock renders a div.
+        const readmeLink = screen.getByText('readme.md').closest('button');
+        // Note: Link mock renders a button.
 
         if (readmeLink) {
             fireEvent.click(readmeLink);
@@ -151,7 +151,7 @@ describe('Sidebar Component', () => {
         render(<Sidebar {...defaultProps} onItemClick={onItemClick} />);
 
         // Click a file link (Desktop mode)
-        const readmeLink = screen.getByText('readme.md').closest('div');
+        const readmeLink = screen.getByText('readme.md').closest('button');
         if (readmeLink) fireEvent.click(readmeLink);
 
         expect(onItemClick).toHaveBeenCalled();
@@ -164,7 +164,7 @@ describe('Sidebar Component', () => {
         render(<Sidebar {...defaultProps} onItemClick={undefined} />);
 
         // Click a file link
-        const readmeLink = screen.getByText('readme.md').closest('div');
+        const readmeLink = screen.getByText('readme.md').closest('button');
 
         // Should not throw
         if (readmeLink) fireEvent.click(readmeLink);
@@ -182,7 +182,7 @@ describe('Sidebar Component', () => {
         />);
 
         // Click a file link inside drawer
-        const readmeLink = screen.getByText('readme.md').closest('div');
+        const readmeLink = screen.getByText('readme.md').closest('button');
 
         if (readmeLink) {
             fireEvent.click(readmeLink);
